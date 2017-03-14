@@ -9,7 +9,7 @@
     freebsd-version -k 
     10.3-RELEASE-p11
 
-## debain/ubuntu
+## debian/ubuntu
 ### running:
 
     sysctl -n kernel.version
