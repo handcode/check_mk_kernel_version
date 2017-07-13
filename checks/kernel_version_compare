@@ -1,0 +1,38 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+
+# Author: Jens Giessmann jg@handcode.de
+
+# check running and (last) installed kernel versions
+# if != return WARNING
+
+# needs plugin installed on clients
+
+# the inventory function (dummy)
+def inventory_kernel_version_compare(info):
+   yield 'compare', None
+
+def check_kernel_version_compare(item, params, info):
+
+   # dummy defaults
+   k_run = 'v1'
+   k_inst = 'v1'
+
+   # info string displayed in icinga
+   info_warn = "Kernel version running %s != installed version %s. System needs reboot!" % (k_run, k_inst)
+   info_ok = "Kernel version running %s match installed version" % (k_run)
+
+   # return status code
+   if k_run != k_inst:
+      return 1, info_warn
+   else:
+      return 0, info_ok
+
+
+
+check_info["kernel_version_compare"] = {
+   'check_function':            check_kernel_version_compare,
+   'inventory_function':        inventory_kernel_version_compare,
+   'service_description':       'Kernel-Version',
+   'has_perfdata':              False,
+}
