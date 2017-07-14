@@ -4,22 +4,25 @@
 
 # this plugin provides info about running and (last) installed kernel versions
 
+K_NAME=''
 K_RUN=''
 K_INST=''
 
 # FreeBSD
 if [ "$(uname -s)" == 'FreeBSD' ]; then
+    K_NAME='FreeBSD'
     K_RUN=$(sysctl -n kern.osrelease)
     K_INST=$(freebsd-version -k)
 fi
 
 # Debian/Ubuntu
 if [ "$(uname -o)" == 'GNU/Linux' ]; then
+    K_NAME='Linux'
     K_RUN=$(sysctl -n kernel.version | awk '{print $4}')
     K_INST=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
 fi
 
 if [ ! -z $K_RUN ]; then
     echo '<<<kernel_version_compare>>>'
-    echo "${K_RUN} ${K_INST}"
+    echo "${K_NAME} ${K_RUN} ${K_INST}"
 fi

@@ -10,13 +10,19 @@
 
 # the inventory function (dummy)
 def inventory_kernel_version_compare(info):
-   yield 'compare', None
+   k_info = info[0]
+   k_name = k_info[0]
+   yield k_name, None
 
 def check_kernel_version_compare(item, params, info):
 
-   # dummy defaults
-   k_run = 'v1'
-   k_inst = 'v1'
+   # get kernel infos from 1. line of client data
+   # example line for FreeBSD:
+   # FreeBSD 10.3-RELEASE-p18 10.3-RELEASE-p19
+   k_info = info[0]
+   k_name = k_info[0]
+   k_run  = k_info[1]
+   k_inst = k_info[2]
 
    # info string displayed in icinga
    info_warn = "Kernel version running %s != installed version %s. System needs reboot!" % (k_run, k_inst)
@@ -27,7 +33,6 @@ def check_kernel_version_compare(item, params, info):
       return 1, info_warn
    else:
       return 0, info_ok
-
 
 
 check_info["kernel_version_compare"] = {
