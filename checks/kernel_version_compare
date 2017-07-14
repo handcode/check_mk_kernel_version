@@ -2,6 +2,8 @@
 # -*- encoding: utf-8; py-indent-offset: 4 -*-
 
 # Author: Jens Giessmann jg@handcode.de
+# Date: 2017-07-14
+# Version: 0.0.1
 
 # check running and (last) installed kernel versions
 # if != return WARNING

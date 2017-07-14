@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # Author: Jens Giessmann jg@handcode.de
+# Date: 2017-07-14
+# Version: 0.0.1
 
 # this plugin provides info about running and (last) installed kernel versions
 
