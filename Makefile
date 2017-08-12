@@ -16,7 +16,6 @@ endif
 
 CMK_CHECK_DIR = /omd/sites/$(OMD_SITE)/local/share/check_mk/checks/
 CMK_PLUGIN_DIR = /omd/sites/$(OMD_SITE)/local/share/check_mk/agents/plugins/
-CMK_TMPL_DIR = /omd/sites/$(OMD_SITE)/local/share/check_mk/pnp-templates/
 CMK_PKG_DIR = /omd/sites/$(OMD_SITE)/var/check_mk/packages/
 CMK_REL_TMP_DIR = /omd/sites/$(OMD_SITE)/release-tmp
 
@@ -28,13 +27,11 @@ default: help
 install:   ##@dev install check_mk plugin, optional OMD_SITE3=hrzg can be overwritten
 	test -d $(CMK_CHECK_DIR) && cp checks/kernel_version_compare  $(CMK_CHECK_DIR)
 	test -d $(CMK_PLUGIN_DIR) && cp plugins/kernel_version_compare  $(CMK_PLUGIN_DIR)
-	test -d $(CMK_TMPL_DIR) && cp templates/check_mk-kernel_version_compare.php  $(CMK_TMPL_DIR)
 	test -d $(CMK_PKG_DIR) && cp packages/kernel_version_compare  $(CMK_PKG_DIR)
 
 purge:   ##@dev purge check_mk plugin files, optional OMD_SITE3=hrzg can be overwritten
 	test -f $(CMK_CHECK_DIR)/kernel_version_compare && rm $(CMK_CHECK_DIR)/kernel_version_compare
 	test -f $(CMK_PLUGIN_DIR)/kernel_version_compare && rm $(CMK_PLUGIN_DIR)/kernel_version_compare
-	test -f $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php && rm $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php
 	test -f $(CMK_PKG_DIR)/kernel_version_compare && rm $(CMK_PKG_DIR)/kernel_version_compare
 
 pkg: ##@pkg alias for package
@@ -48,7 +45,7 @@ package: install
 release: ##@pkg build check_mk package and copy *.mkp file to repo
 release: package
 	echo "move created package file to repo"
-	test -d $(CMK_REL_TMP_DIR) && test -f $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp && chown root:root $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp && mv $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp ./releases/ && rmdir $(CMK_REL_TMP_DIR)
+	test -d $(CMK_REL_TMP_DIR) && test -f $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp && chown root:root $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp && mkdir -p ./releases/ && mv $(CMK_REL_TMP_DIR)/kernel_version_compare-*.mkp ./releases/ && rmdir $(CMK_REL_TMP_DIR)
 	echo "DONE, if you wish, please commit created mkp file to repo"
 	ls -latr ./releases/*.mkp
 
