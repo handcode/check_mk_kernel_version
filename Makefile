@@ -8,7 +8,7 @@
 # check user and decided wether we should execute commands with sudo prefix?
 user = $(shell whoami)
 PWD ?= $(shell pwd)
-OMD_SITE = cfa_v2
+OMD_SITE = cfa
 
 ifneq ($(user),root)
 $(error You must be root to run this.)
@@ -28,14 +28,14 @@ default: help
 install:   ##@dev install check_mk plugin, optional OMD_SITE3=hrzg can be overwritten
 	test -d $(CMK_CHECK_DIR) && cp checks/kernel_version_compare  $(CMK_CHECK_DIR)
 	test -d $(CMK_PLUGIN_DIR) && cp plugins/kernel_version_compare  $(CMK_PLUGIN_DIR)
-	#test -d $(CMK_TMPL_DIR) && cp templates/check_mk-kernel_version_compare.php  $(CMK_TMPL_DIR)
-	#test -d $(CMK_PKG_DIR) && cp packages/kernel_version_compare  $(CMK_PKG_DIR)
+	test -d $(CMK_TMPL_DIR) && cp templates/check_mk-kernel_version_compare.php  $(CMK_TMPL_DIR)
+	test -d $(CMK_PKG_DIR) && cp packages/kernel_version_compare  $(CMK_PKG_DIR)
 
 purge:   ##@dev purge check_mk plugin files, optional OMD_SITE3=hrzg can be overwritten
 	test -f $(CMK_CHECK_DIR)/kernel_version_compare && rm $(CMK_CHECK_DIR)/kernel_version_compare
 	test -f $(CMK_PLUGIN_DIR)/kernel_version_compare && rm $(CMK_PLUGIN_DIR)/kernel_version_compare
-	#test -f $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php && rm $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php
-	#test -f $(CMK_PKG_DIR)/kernel_version_compare && rm $(CMK_PKG_DIR)/kernel_version_compare
+	test -f $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php && rm $(CMK_TMPL_DIR)/check_mk-kernel_version_compare.php
+	test -f $(CMK_PKG_DIR)/kernel_version_compare && rm $(CMK_PKG_DIR)/kernel_version_compare
 
 pkg: ##@pkg alias for package
 pkg: package
