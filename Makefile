@@ -43,7 +43,7 @@ pkg: package
 package: ##@pkg build check_mk package from installed repo files
 package: install
 	echo "build check_mk package from installed repo files"
-	su - $OMD_SITE -c 'mkdir -p release-tmp && cd release-tmp && cmk -vP pack kernel_version_compare && pwd'
+	su - $(OMD_SITE) -c 'mkdir -p release-tmp && cd release-tmp && cmk -vP pack kernel_version_compare && pwd'
 
 release: ##@pkg build check_mk package and copy *.mkp file to repo
 release: package
