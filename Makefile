@@ -24,12 +24,12 @@ CMK_REL_TMP_DIR = /omd/sites/$(OMD_SITE)/release-tmp
 # --------------------
 default: help
 
-install:   ##@dev install check_mk plugin, optional OMD_SITE3=hrzg can be overwritten
+install:   ##@dev install check_mk plugin, optional OMD_SITE=cfa can be overwritten
 	test -d $(CMK_CHECK_DIR) && cp checks/kernel_version_compare  $(CMK_CHECK_DIR)
 	test -d $(CMK_PLUGIN_DIR) && cp plugins/kernel_version_compare  $(CMK_PLUGIN_DIR)
 	test -d $(CMK_PKG_DIR) && cp packages/kernel_version_compare  $(CMK_PKG_DIR)
 
-purge:   ##@dev purge check_mk plugin files, optional OMD_SITE3=hrzg can be overwritten
+purge:   ##@dev purge check_mk plugin files, optional OMD_SITE=cfa can be overwritten
 	test -f $(CMK_CHECK_DIR)/kernel_version_compare && rm $(CMK_CHECK_DIR)/kernel_version_compare
 	test -f $(CMK_PLUGIN_DIR)/kernel_version_compare && rm $(CMK_PLUGIN_DIR)/kernel_version_compare
 	test -f $(CMK_PKG_DIR)/kernel_version_compare && rm $(CMK_PKG_DIR)/kernel_version_compare
