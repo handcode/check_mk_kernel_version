@@ -5,7 +5,7 @@ check_mk plugin to monitor if running kernel mach (last) installed version
 Testet with FreeBSD and Debian, check cmds for others are welcome
 
 ## cli cmds to get installed and running kernel versions
-### freeBSD:
+### FreeBSD:
 #### running kernel
 
     sysctl -n kern.osrelease 
