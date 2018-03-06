@@ -1,6 +1,6 @@
 {'author': 'Jens Giessmann jg@handcode.de',
  'description': 'check_mk plugin to monitor that running kernel == installed kernel',
- 'download_url': 'http://example.com/zvolsize/',
+ 'download_url': 'https://github.com/handcode/check_mk_kernel_version',
  'files': {'agents': ['plugins/kernel_version_compare'],
            'checkman': [],
            'checks': ['kernel_version_compare'],
@@ -12,5 +12,5 @@
  'name': 'kernel_version_compare',
  'title': 'Kernel Compare',
  'version': '0.1.0',
- 'version.min_required': '1.2.6p12',
- 'version.packaged': '1.2.6p12'}
+ 'version.min_required': '1.2.6',
+ 'version.packaged': '1.2.6'}
