@@ -24,7 +24,17 @@ Testet with FreeBSD and Debian, check cmds for others are welcome
 
 #### installed 
 
-    dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}'
+    # different kernel versions may be installed, so we need to compare                                                                         
+    # all available versions to find the latest  
+
+    # get the version of the currently running image as start                                                                               
+    latest=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
+
+    for i in $(dpkg -l | grep linux-image-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
+    do
+        dpkg --compare-versions $i gt $latest && latest=$i
+    done
+    echo $latest
     3.16.39-1+deb8u2
 
 

@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # Author: Jens Giessmann jg@handcode.de
-# Date: 2017-07-14
-# Version: 0.0.1
+# Date: 2018-05-15
+# Version: 0.1.2
 
 # this plugin provides info about running and (last) installed kernel versions
 
@@ -10,20 +10,41 @@ K_NAME=''
 K_RUN=''
 K_INST=''
 
+# --------------------------------------------------------------------
 # FreeBSD
+# --------------------------------------------------------------------
 if [ "$(uname -s)" == 'FreeBSD' ]; then
     K_NAME='FreeBSD'
     K_RUN=$(sysctl -n kern.osrelease)
     K_INST=$(freebsd-version -k)
 fi
 
+# --------------------------------------------------------------------
 # Debian/Ubuntu
+# --------------------------------------------------------------------
+# different kernel versions may be installed, so we need to compare
+# all available versions to find the latest
+function debian_get_latest_installed() {
+
+    # get the version of the currently running image as start
+    latest=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
+
+    for i in $(dpkg -l | grep linux-image-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
+    do
+        dpkg --compare-versions $i gt $latest && latest=$i
+    done
+    echo $latest
+}
+
 if [ "$(uname -o)" == 'GNU/Linux' ]; then
     K_NAME='Linux'
     K_RUN=$(sysctl -n kernel.version | awk '{print $4}')
-    K_INST=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
+    K_INST=$(debian_get_latest_installed)
 fi
 
+# --------------------------------------------------------------------
+# write plugin output if available
+# --------------------------------------------------------------------
 if [ ! -z $K_RUN ]; then
     echo '<<<kernel_version_compare>>>'
     echo "${K_NAME} ${K_RUN} ${K_INST}"
