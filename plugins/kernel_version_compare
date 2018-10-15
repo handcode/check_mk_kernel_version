@@ -1,8 +1,7 @@
 #!/bin/sh
 
 # Author: Jens Giessmann jg@handcode.de
-# Date: 2018-05-15
-# Version: 0.1.2
+# Version: 0.1.2-rc1
 
 # this plugin provides info about running and (last) installed kernel versions
 
@@ -13,33 +12,40 @@ K_INST=''
 # --------------------------------------------------------------------
 # FreeBSD
 # --------------------------------------------------------------------
-if [ "$(uname -s)" == 'FreeBSD' ]; then
+if [ "$(uname -s)" = 'FreeBSD' ]; then
     K_NAME='FreeBSD'
     K_RUN=$(sysctl -n kern.osrelease)
     K_INST=$(freebsd-version -k)
 fi
 
 # --------------------------------------------------------------------
-# Debian/Ubuntu
+# Debian/Ubuntu/Proxmox
 # --------------------------------------------------------------------
 # different kernel versions may be installed, so we need to compare
 # all available versions to find the latest
-function debian_get_latest_installed() {
+dpkg_get_latest_installed () {
+
+    # Proxmox PVE kernel package uses different naming convention. thanks @mdklapwijk
+    # default debian kernel package prefix
+    case "$(uname -r)" in
+        *-pve)  image_prefix='pve-kernel';;
+        *)      image_prefix='linux-image';;
+    esac
 
     # get the version of the currently running image as start
-    latest=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
+    latest=$(dpkg -l | grep ${image_prefix}-$(uname -r) | awk '{print $3}')
 
-    for i in $(dpkg -l | grep linux-image-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
+    for i in $(dpkg -l | grep ${image_prefix}-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
     do
-        dpkg --compare-versions $i gt $latest && latest=$i
+        dpkg --compare-versions $i gt $latest && latest="${i}"
     done
-    echo $latest
+    echo "${latest}"
 }
 
-if [ "$(uname -o)" == 'GNU/Linux' ]; then
+if [ "$(uname -o)" = 'GNU/Linux' ]; then
     K_NAME='Linux'
     K_RUN=$(sysctl -n kernel.version | awk '{print $4}')
-    K_INST=$(debian_get_latest_installed)
+    K_INST=$(dpkg_get_latest_installed)
 fi
 
 # --------------------------------------------------------------------
