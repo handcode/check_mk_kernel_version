@@ -2,7 +2,12 @@
 
 check_mk plugin to monitor if running kernel mach (last) installed version
 
-Testet with FreeBSD and Debian, check cmds for others are welcome
+Testet with:
+- FreeBSD
+- Debian
+- Proxmox (thanks @mdklapwijk)
+
+check cmds for others are welcome
 
 ## cli cmds to get installed and running kernel versions
 ### FreeBSD:
@@ -44,7 +49,7 @@ Testet with FreeBSD and Debian, check cmds for others are welcome
 
 #### check_mk package:
 ```
-cmk -vP releases/kernel_version_compare-<VERSION>.mkp
+mkp install releases/kernel_version_compare-<VERSION>.mkp
 ```
 
 #### manually:
