@@ -24,6 +24,14 @@ if [ "$(uname -o)" == 'GNU/Linux' ]; then
     K_INST=$(dpkg -l | grep linux-image-$(uname -r) | awk '{print $3}')
 fi
 
+# Proxmox
+if [[ "$(uname -r)" =~ ^.*-pve$ ]]; then
+    echo "uname found"
+    K_NAME='Linux'
+    K_RUN=$(sysctl -n kernel.version | awk '{print $4}')
+    K_INST=$(dpkg -l | grep pve-kernel-$(uname -r) | awk '{print $3}')
+fi
+
 if [ ! -z $K_RUN ]; then
     echo '<<<kernel_version_compare>>>'
     echo "${K_NAME} ${K_RUN} ${K_INST}"
