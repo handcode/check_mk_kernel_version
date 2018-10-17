@@ -37,7 +37,7 @@ dpkg_get_latest_installed () {
 
     for i in $(dpkg -l | grep ${image_prefix}-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
     do
-        dpkg --compare-versions $i gt $latest && latest="${i}"
+        dpkg --compare-versions "${i}" gt "${latest}" && latest="${i}"
     done
     echo "${latest}"
 }
@@ -51,7 +51,7 @@ fi
 # --------------------------------------------------------------------
 # write plugin output if available
 # --------------------------------------------------------------------
-if [ ! -z $K_RUN ]; then
+if [ -n "${K_RUN}" ]; then
     echo '<<<kernel_version_compare>>>'
     echo "${K_NAME} ${K_RUN} ${K_INST}"
 fi
