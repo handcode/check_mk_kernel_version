@@ -25,17 +25,19 @@ fi
 # all available versions to find the latest
 dpkg_get_latest_installed () {
 
+	local pkg_prefix pkg_suffix latest
+
     # Proxmox PVE kernel package uses different naming convention. thanks @mdklapwijk
     # default debian kernel package prefix
     case "$(uname -r)" in
-        *-pve)  image_prefix='pve-kernel';;
-        *)      image_prefix='linux-image';;
+        *-pve)  pkg_prefix='pve-kernel';  pkg_suffix='-pve' ;;
+        *)      pkg_prefix='linux-image'; pkg_suffix='';;
     esac
 
-    # get the version of the currently running image as start
-    latest=$(dpkg -l | grep ${image_prefix}-$(uname -r) | awk '{print $3}')
-
-    for i in $(dpkg -l | grep ${image_prefix}-$(uname -r | cut -d '.' -f1) | awk '{print $3}')
+    # get the pkg version of the currently running image as start
+    latest=$(dpkg -l | grep "${pkg_prefix}-$(uname -r)" | awk '{print $3}')
+	# compare latest version with all installed versions of this kernel 
+    for i in $(dpkg -l "${pkg_prefix}-$(uname -r | cut -d '.' -f1).*${pkg_suffix}" | grep '^ii' | awk '{print $3}')
     do
         dpkg --compare-versions "${i}" gt "${latest}" && latest="${i}"
     done
